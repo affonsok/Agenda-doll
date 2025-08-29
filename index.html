@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Agenda da Isadora</title>
+    <meta name="description" content="Organizador de tarefas divertido para crianças">
+    <meta name="theme-color" content="#FFB6C1">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Principal -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="app-title">
+                <img src="logo.svg" alt="Agenda da Isadora" class="app-logo">
+                <span class="title-text">Agenda da Isadora</span>
+            </h1>
+            <div class="stars-counter">
+                <span class="stars-icon">⭐</span>
+                <span class="stars-count" id="starsCount">0</span>
+            </div>
+            <button class="settings-btn" id="settingsBtn" aria-label="Configurações">
+                <span class="settings-icon">⚙️</span>
+            </button>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </header>
+
+    <!-- Área Principal -->
+    <main class="main-content">
+        <!-- Filtros de Visualização -->
+        <div class="view-filters">
+            <button class="filter-btn active" data-filter="hoje" id="filterToday">Hoje</button>
+            <button class="filter-btn" data-filter="semana" id="filterWeek">Semana</button>
+            <button class="filter-btn" data-filter="todas" id="filterAll">Todas</button>
+        </div>
+
+        <!-- Lista de Tarefas -->
+        <div class="tasks-container">
+            <div class="tasks-header">
+                <h2 class="tasks-title" id="tasksTitle">📋 Tarefas de Hoje</h2>
+                <span class="tasks-count" id="tasksCount">0 tarefas</span>
+            </div>
+            
+            <div class="tasks-list" id="tasksList">
+                <!-- Tarefas serão inseridas aqui dinamicamente -->
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">📝</div>
+                    <p class="empty-text">Nenhuma tarefa ainda!</p>
+                    <p class="empty-subtext">Que tal adicionar sua primeira tarefa?</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Botão Flutuante Adicionar -->
+    <button class="fab" id="addTaskBtn" aria-label="Adicionar nova tarefa">
+        <span class="fab-icon">+</span>
+    </button>
+
+    <!-- Navegação Inferior -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-view="hoje">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Hoje</span>
+        </button>
+        <button class="nav-btn" data-view="semana">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Semana</span>
+        </button>
+        <button class="nav-btn" data-view="todas">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Todas</span>
+        </button>
+    </nav>
+
+    <!-- Modal Adicionar/Editar Tarefa -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">✨ Nova Tarefa</h3>
+                <button class="modal-close" id="modalClose" aria-label="Fechar">&times;</button>
+            </div>
+            
+            <form class="task-form" id="taskForm">
+                <div class="form-group">
+                    <label for="taskTitle" class="form-label">📝 Título da Tarefa</label>
+                    <input type="text" id="taskTitle" class="form-input" placeholder="Ex: Fazer tarefa de matemática" maxlength="100" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskCategory" class="form-label">🏷️ Categoria</label>
+                    <select id="taskCategory" class="form-select" required>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="escola">📚 Tarefas da Escola</option>
+                        <option value="casa">🏠 Tarefas de Casa</option>
+                        <option value="higiene">🚿 Rotinas de Higiene</option>
+                        <option value="atividades">🎯 Atividades Extras</option>
+                        <option value="alimentacao">🍎 Alimentação / Remédio</option>
+                        <option value="outro">⭐ Outros</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskDate" class="form-label">📅 Data</label>
+                        <input type="date" id="taskDate" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskTime" class="form-label">⏰ Hora</label>
+                        <input type="time" id="taskTime" class="form-input" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskRecurrence" class="form-label">🔄 Repetir</label>
+                    <select id="taskRecurrence" class="form-select">
+                        <option value="unica">Apenas uma vez</option>
+                        <option value="diaria">Todos os dias</option>
+                        <option value="semanal">Toda semana</option>
+                        <option value="personalizada">Personalizada</option>
+                    </select>
+                </div>
+
+                <div class="form-group recurrence-options" id="recurrenceOptions" style="display: none;">
+                    <label class="form-label">📆 Dias da Semana</label>
+                    <div class="weekdays-selector">
+                        <label class="weekday-item">
+                            <input type="checkbox" value="0" class="weekday-checkbox">
+                            <span class="weekday-label">Dom</span>
+                        </label>
+                        <label class="weekday-item">
+                            <input type="checkbox" value="1" class="weekday-checkbox">
+                            <span class="weekday-label">Seg</span>
+                        </label>
+                        <label class="weekday-item">
+                            <input type="checkbox" value="2" class="weekday-checkbox">
+                            <span class="weekday-label">Ter</span>
+                        </label>
+                        <label class="weekday-item">
+                            <input type="checkbox" value="3" class="weekday-checkbox">
+                            <span class="weekday-label">Qua</span>
+                        </label>
+                        <label class="weekday-item">
+                            <input type="checkbox" value="4" class="weekday-checkbox">
+                            <span class="weekday-label">Qui</span>
+                        </label>
+                        <label class="weekday-item">
+                            <input type="checkbox" value="5" class="weekday-checkbox">
+                            <span class="weekday-label">Sex</span>
+                        </label>
+                        <label class="weekday-item">
+                            <input type="checkbox" value="6" class="weekday-checkbox">
+                            <span class="weekday-label">Sáb</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn">💾 Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Configurações -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">⚙️ Configurações</h3>
+                <button class="modal-close" id="settingsModalClose" aria-label="Fechar">&times;</button>
+            </div>
+            
+            <div class="settings-content">
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span class="setting-icon">🌙</span>
+                        <span class="setting-text">Modo Escuro</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="darkModeToggle" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span class="setting-icon">🔊</span>
+                        <span class="setting-text">Sons</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="soundToggle" class="toggle-input" checked>
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span class="setting-icon">🔊</span>
+                        <span class="setting-text">Sons Personalizados</span>
+                        <button class="setting-button" id="customSoundsBtn">
+                            <span class="setting-arrow">→</span>
+                        </button>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <button class="setting-button" id="exportBtn">
+                        <span class="setting-icon">📅</span>
+                        <span class="setting-text">Exportar para Google Calendar</span>
+                        <span class="setting-arrow">→</span>
+                    </button>
+                </div>
+
+                <div class="setting-item">
+                    <button class="setting-button" id="achievementsBtn">
+                        <span class="setting-icon">🏆</span>
+                        <span class="setting-text">Minhas Conquistas</span>
+                        <span class="setting-arrow">→</span>
+                    </button>
+                </div>
+
+                <div class="setting-item">
+                    <button class="setting-button danger" id="clearDataBtn">
+                        <span class="setting-icon">🗑️</span>
+                        <span class="setting-text">Limpar Todos os Dados</span>
+                        <span class="setting-arrow">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Conquistas -->
+    <div class="modal" id="achievementsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">🏆 Minhas Conquistas</h3>
+                <button class="modal-close" id="achievementsModalClose" aria-label="Fechar">&times;</button>
+            </div>
+            
+            <div class="achievements-content" id="achievementsList">
+                <!-- Conquistas serão inseridas aqui dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Exportação -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">📅 Exportar para Google Calendar</h3>
+                <button class="modal-close" id="exportModalClose" aria-label="Fechar">&times;</button>
+            </div>
+            
+            <div class="export-content">
+                <div class="export-info">
+                    <p>📋 Suas tarefas serão exportadas em um arquivo que você pode importar no Google Calendar.</p>
+                </div>
+                
+                <div class="export-actions">
+                    <button class="btn btn-primary" id="downloadIcsBtn">
+                        <span class="btn-icon">📥</span>
+                        Baixar Arquivo (.ics)
+                    </button>
+                </div>
+                
+                <div class="export-instructions">
+                    <h4>📖 Como importar no Google Calendar:</h4>
+                    <ol>
+                        <li>Abra o Google Calendar no computador</li>
+                        <li>Clique em "Configurações" (engrenagem)</li>
+                        <li>Selecione "Importar e exportar"</li>
+                        <li>Clique em "Selecionar arquivo" e escolha o arquivo baixado</li>
+                        <li>Escolha o calendário e clique em "Importar"</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Sons Personalizados -->
+    <div class="modal" id="customSoundsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">🔊 Sons Personalizados</h3>
+                <button class="modal-close" id="customSoundsModalClose" aria-label="Fechar">&times;</button>
+            </div>
+            
+            <div class="custom-sounds-content">
+                <div class="sound-setting">
+                    <label class="sound-label">
+                        <span class="sound-icon">✅</span>
+                        <span class="sound-text">Som de Tarefa Completa</span>
+                    </label>
+                    <div class="sound-controls">
+                        <input type="file" id="taskCompleteSound" accept="audio/*" class="sound-input">
+                        <button class="btn btn-secondary" id="playTaskCompleteSound">▶️ Testar</button>
+                        <button class="btn btn-secondary" id="resetTaskCompleteSound">🔄 Padrão</button>
+                    </div>
+                </div>
+
+                <div class="sound-setting">
+                    <label class="sound-label">
+                        <span class="sound-icon">🏆</span>
+                        <span class="sound-text">Som de Conquista</span>
+                    </label>
+                    <div class="sound-controls">
+                        <input type="file" id="achievementSound" accept="audio/*" class="sound-input">
+                        <button class="btn btn-secondary" id="playAchievementSound">▶️ Testar</button>
+                        <button class="btn btn-secondary" id="resetAchievementSound">🔄 Padrão</button>
+                    </div>
+                </div>
+
+                <div class="sound-setting">
+                    <label class="sound-label">
+                        <span class="sound-icon">🔔</span>
+                        <span class="sound-text">Som de Notificação</span>
+                    </label>
+                    <div class="sound-controls">
+                        <input type="file" id="notificationSound" accept="audio/*" class="sound-input">
+                        <button class="btn btn-secondary" id="playNotificationSound">▶️ Testar</button>
+                        <button class="btn btn-secondary" id="resetNotificationSound">🔄 Padrão</button>
+                    </div>
+                </div>
+
+                <div class="sound-info">
+                    <p>💡 <strong>Dica:</strong> Use arquivos de áudio pequenos (MP3, WAV, OGG) para melhor performance.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Área de Notificações/Mensagens -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <span class="notification-icon">✨</span>
+            <span class="notification-text" id="notificationText"></span>
+        </div>
+    </div>
+
+    <!-- Confetti para Animações -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

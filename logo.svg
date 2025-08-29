@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <!-- Background circle -->
+  <circle cx="200" cy="200" r="190" fill="#FFF0F5" stroke="#FFB6C1" stroke-width="4"/>
+  
+  <!-- Main character (with glasses) -->
+  <g transform="translate(120, 80)">
+    <!-- Hair -->
+    <path d="M20 40 Q10 20 30 15 Q50 10 70 15 Q90 20 80 40 Q85 60 75 80 L25 80 Q15 60 20 40" fill="#8B4513"/>
+    
+    <!-- Face -->
+    <ellipse cx="50" cy="60" rx="25" ry="30" fill="#FDBCB4"/>
+    
+    <!-- Glasses -->
+    <circle cx="42" cy="55" r="8" fill="none" stroke="#333" stroke-width="2"/>
+    <circle cx="58" cy="55" r="8" fill="none" stroke="#333" stroke-width="2"/>
+    <line x1="50" y1="55" x2="50" y2="55" stroke="#333" stroke-width="2"/>
+    
+    <!-- Eyes -->
+    <circle cx="42" cy="55" r="3" fill="#333"/>
+    <circle cx="58" cy="55" r="3" fill="#333"/>
+    
+    <!-- Smile -->
+    <path d="M40 65 Q50 72 60 65" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Body -->
+    <rect x="35" y="85" width="30" height="40" rx="15" fill="#87CEEB"/>
+    
+    <!-- Arms -->
+    <ellipse cx="25" cy="95" rx="8" ry="15" fill="#FDBCB4"/>
+    <ellipse cx="75" cy="95" rx="8" ry="15" fill="#FDBCB4"/>
+  </g>
+  
+  <!-- Smaller character -->
+  <g transform="translate(220, 120)">
+    <!-- Hair -->
+    <path d="M15 30 Q8 15 22 12 Q35 8 48 12 Q58 15 52 30 Q55 45 48 60 L18 60 Q10 45 15 30" fill="#DEB887"/>
+    
+    <!-- Face -->
+    <ellipse cx="35" cy="45" rx="18" ry="22" fill="#FDBCB4"/>
+    
+    <!-- Eyes -->
+    <circle cx="30" cy="42" r="2" fill="#40E0D0"/>
+    <circle cx="40" cy="42" r="2" fill="#40E0D0"/>
+    
+    <!-- Smile -->
+    <path d="M28 50 Q35 55 42 50" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round"/>
+    
+    <!-- Body -->
+    <rect x="23" y="65" width="24" height="32" rx="12" fill="#E6E6FA"/>
+    
+    <!-- Arms -->
+    <ellipse cx="15" cy="72" rx="6" ry="12" fill="#FDBCB4"/>
+    <ellipse cx="55" cy="72" rx="6" ry="12" fill="#FDBCB4"/>
+  </g>
+  
+  <!-- Agenda/Notebook -->
+  <g transform="translate(80, 180)">
+    <!-- Notebook background -->
+    <rect x="0" y="0" width="120" height="140" rx="8" fill="#FFFACD" stroke="#DDD" stroke-width="2"/>
+    
+    <!-- Spiral binding -->
+    <circle cx="15" cy="15" r="3" fill="none" stroke="#888" stroke-width="1"/>
+    <circle cx="15" cy="35" r="3" fill="none" stroke="#888" stroke-width="1"/>
+    <circle cx="15" cy="55" r="3" fill="none" stroke="#888" stroke-width="1"/>
+    <circle cx="15" cy="75" r="3" fill="none" stroke="#888" stroke-width="1"/>
+    <circle cx="15" cy="95" r="3" fill="none" stroke="#888" stroke-width="1"/>
+    <circle cx="15" cy="115" r="3" fill="none" stroke="#888" stroke-width="1"/>
+    
+    <!-- Header -->
+    <text x="35" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Isadora</text>
+    
+    <!-- Task items -->
+    <g transform="translate(30, 35)">
+      <!-- Completed tasks -->
+      <text x="15" y="15" font-family="Arial, sans-serif" font-size="10" fill="#4CAF50">✓ Criar lista</text>
+      <text x="15" y="30" font-family="Arial, sans-serif" font-size="10" fill="#4CAF50">✓ Vernacular</text>
+      
+      <!-- Pending tasks -->
+      <text x="15" y="45" font-family="Arial, sans-serif" font-size="10" fill="#666">□ Vadolibole!</text>
+      <text x="15" y="60" font-family="Arial, sans-serif" font-size="10" fill="#666">□ Tarefa da clube</text>
+      <text x="15" y="75" font-family="Arial, sans-serif" font-size="10" fill="#666">□ Tarefinha de escalas</text>
+      <text x="15" y="90" font-family="Arial, sans-serif" font-size="10" fill="#666">□ Aula de Karate</text>
+    </g>
+    
+    <!-- Achievement icon -->
+    <text x="35" y="130" font-family="Arial, sans-serif" font-size="12" fill="#FFD700">🏆 Adereguiufas</text>
+  </g>
+  
+  <!-- Decorative stars -->
+  <text x="50" y="50" font-size="20" fill="#FFD700">⭐</text>
+  <text x="320" y="80" font-size="16" fill="#FFB6C1">✨</text>
+  <text x="350" y="300" font-size="18" fill="#87CEEB">🌟</text>
+  <text x="30" y="350" font-size="14" fill="#DDA0DD">💫</text>
+</svg>
