@@ -255,31 +255,47 @@
     <div class="modal" id="exportModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">📅 Exportar para Google Calendar</h3>
+                <h3 class="modal-title">📅 Exportar Tarefas</h3>
                 <button class="modal-close" id="exportModalClose" aria-label="Fechar">&times;</button>
             </div>
             
             <div class="export-content">
                 <div class="export-info">
-                    <p>📋 Suas tarefas serão exportadas em um arquivo que você pode importar no Google Calendar.</p>
+                    <p>📱 Escolha como você quer adicionar suas tarefas na agenda:</p>
                 </div>
                 
                 <div class="export-actions">
-                    <button class="btn btn-primary" id="downloadIcsBtn">
+                    <button class="btn btn-primary" id="exportAndroidBtn">
+                        <span class="btn-icon">📱</span>
+                        Abrir no Calendário Android
+                    </button>
+                    
+                    <button class="btn btn-secondary" id="downloadIcsBtn">
                         <span class="btn-icon">📥</span>
                         Baixar Arquivo (.ics)
                     </button>
                 </div>
                 
                 <div class="export-instructions">
-                    <h4>📖 Como importar no Google Calendar:</h4>
-                    <ol>
-                        <li>Abra o Google Calendar no computador</li>
-                        <li>Clique em "Configurações" (engrenagem)</li>
-                        <li>Selecione "Importar e exportar"</li>
-                        <li>Clique em "Selecionar arquivo" e escolha o arquivo baixado</li>
-                        <li>Escolha o calendário e clique em "Importar"</li>
-                    </ol>
+                    <div class="instruction-section">
+                        <h4>📱 Calendário Android (Recomendado):</h4>
+                        <ul>
+                            <li>Abre diretamente no app de calendário do seu celular</li>
+                            <li>Adiciona as tarefas automaticamente</li>
+                            <li>Funciona com Google Calendar, Samsung Calendar, etc.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="instruction-section">
+                        <h4>📥 Arquivo .ics (Computador):</h4>
+                        <ol>
+                            <li>Baixe o arquivo no seu computador</li>
+                            <li>Abra o Google Calendar no navegador</li>
+                            <li>Clique em "Configurações" (engrenagem)</li>
+                            <li>Selecione "Importar e exportar"</li>
+                            <li>Escolha o arquivo e clique em "Importar"</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>
