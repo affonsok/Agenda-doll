@@ -6,6 +6,10 @@
 const CONFIG = {
   MAX_TASKS: 100,
   MAX_TITLE_LENGTH: 100,
+  GOOGLE_CALENDAR: {
+    CALENDAR_ID: '147110aa4380cbf4050c5334c0fe5c460e16d5d2021ce2a4ad039d817aaf882c@group.calendar.google.com',
+    PUBLIC_URL: 'https://calendar.google.com/calendar/embed?src=147110aa4380cbf4050c5334c0fe5c460e16d5d2021ce2a4ad039d817aaf882c%40group.calendar.google.com&ctz=America%2FSao_Paulo'
+  },
   STORAGE_KEYS: {
     TASKS: 'agenda_tarefas',
     STARS: 'agenda_estrelas',
@@ -798,18 +802,17 @@ class AppState {
     const startDate = new Date(task.dataHora);
     const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hora depois
     
-    // Formato de data para Android Calendar Intent
-    const startTime = startDate.getTime();
-    const endTime = endDate.getTime();
-    
     const title = encodeURIComponent(`${task.emoji} ${task.titulo}`);
     const description = encodeURIComponent(`Categoria: ${CONFIG.CATEGORIES[task.categoria].name}\n\nCriado pela Agenda da Isadora`);
     
-    // Intent URL para Android Calendar
-    const intentUrl = `intent://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${this.formatDateForAndroid(startDate)}/${this.formatDateForAndroid(endDate)}&details=${description}#Intent;scheme=https;package=com.google.android.calendar;end`;
+    // URLs com a agenda específica da Isadora
+    const calendarId = encodeURIComponent(CONFIG.GOOGLE_CALENDAR.CALENDAR_ID);
     
-    // Fallback para web se o app não estiver disponível
-    const webUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${this.formatDateForAndroid(startDate)}/${this.formatDateForAndroid(endDate)}&details=${description}`;
+    // Intent URL para Android Calendar com agenda específica
+    const intentUrl = `intent://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${this.formatDateForAndroid(startDate)}/${this.formatDateForAndroid(endDate)}&details=${description}&src=${calendarId}#Intent;scheme=https;package=com.google.android.calendar;end`;
+    
+    // Fallback para web com agenda específica
+    const webUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${this.formatDateForAndroid(startDate)}/${this.formatDateForAndroid(endDate)}&details=${description}&src=${calendarId}`;
     
     try {
       // Tenta abrir o app nativo primeiro
@@ -820,11 +823,11 @@ class AppState {
         window.open(webUrl, '_blank');
       }, 1000);
       
-      this.showNotification('Abrindo calendário do Android... 📱');
+      this.showNotification('Abrindo na Agenda da Isadora... 📱');
     } catch (error) {
       // Se falhar, abre direto no navegador
       window.open(webUrl, '_blank');
-      this.showNotification('Abrindo Google Calendar... 📅');
+      this.showNotification('Abrindo Agenda da Isadora... 📅');
     }
   }
 
@@ -862,6 +865,14 @@ class AppState {
    */
   formatDateForAndroid(date) {
     return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  }
+
+  /**
+   * Abre diretamente a agenda específica da Isadora
+   */
+  openIsadoraCalendar() {
+    window.open(CONFIG.GOOGLE_CALENDAR.PUBLIC_URL, '_blank');
+    this.showNotification('Abrindo a Agenda da Isadora... 📅');
   }
 
   exportToICS() {
@@ -1175,6 +1186,10 @@ class AppState {
     
     document.getElementById('exportModalClose').addEventListener('click', () => {
       this.closeExportModal();
+    });
+    
+    document.getElementById('openIsadoraCalendarBtn').addEventListener('click', () => {
+      this.openIsadoraCalendar();
     });
     
     document.getElementById('exportAndroidBtn').addEventListener('click', () => {
