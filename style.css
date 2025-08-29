@@ -1216,9 +1216,281 @@ body {
 }
 
 /* ===== RESPONSIVIDADE ===== */
-@media (max-width: 768px) {
+
+/* Dispositivos móveis pequenos (320px - 480px) */
+@media (max-width: 480px) {
+  /* Reduzir tamanhos de fonte para mobile */
+  :root {
+    --font-size-xs: 0.7rem;
+    --font-size-sm: 0.8rem;
+    --font-size-md: 0.9rem;
+    --font-size-lg: 1rem;
+    --font-size-xl: 1.1rem;
+    --font-size-2xl: 1.3rem;
+    
+    --spacing-xs: 0.2rem;
+    --spacing-sm: 0.4rem;
+    --spacing-md: 0.8rem;
+    --spacing-lg: 1.2rem;
+    --spacing-xl: 1.6rem;
+  }
+  
+  /* Header otimizado para mobile */
+  .header {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .app-title {
+    font-size: var(--font-size-lg);
+  }
+  
+  .app-logo {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .stars-counter {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .settings-btn {
+    min-width: 36px;
+    min-height: 36px;
+    padding: var(--spacing-xs);
+  }
+  
+  /* Conteúdo principal */
   .main-content {
-    padding: var(--spacing-xl);
+    margin-top: 100px;
+    padding: var(--spacing-md);
+  }
+  
+  /* Filtros mais compactos */
+  .view-filters {
+    margin-bottom: var(--spacing-md);
+    padding: 2px;
+  }
+  
+  .filter-btn {
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    min-height: 36px;
+  }
+  
+  /* Container de tarefas */
+  .tasks-container {
+    padding: var(--spacing-md);
+  }
+  
+  .tasks-title {
+    font-size: var(--font-size-lg);
+  }
+  
+  .tasks-count {
+    font-size: var(--font-size-xs);
+    padding: 2px var(--spacing-xs);
+  }
+  
+  /* Itens de tarefa mais compactos */
+  .task-item {
+    padding: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+  
+  .task-checkbox {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .task-title {
+    font-size: var(--font-size-sm);
+    margin-bottom: 2px;
+  }
+  
+  .task-meta {
+    font-size: var(--font-size-xs);
+    gap: var(--spacing-xs);
+  }
+  
+  .task-category {
+    padding: 2px var(--spacing-xs);
+  }
+  
+  .task-action-btn {
+    width: 28px;
+    height: 28px;
+  }
+  
+  /* Botão flutuante */
+  .fab {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+    bottom: 120px;
+  }
+  
+  /* Navegação inferior */
+  .bottom-nav {
+    padding: var(--spacing-xs) 0;
+  }
+  
+  .nav-btn {
+    padding: var(--spacing-xs);
+    min-height: 50px;
+  }
+  
+  .nav-icon {
+    font-size: var(--font-size-lg);
+  }
+  
+  .nav-label {
+    font-size: var(--font-size-xs);
+  }
+  
+  /* Modais otimizados para mobile */
+  .modal-content {
+    margin: var(--spacing-md);
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+  
+  .modal-header {
+    padding: var(--spacing-md);
+  }
+  
+  .modal-title {
+    font-size: var(--font-size-lg);
+  }
+  
+  .modal-close {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-lg);
+  }
+  
+  .modal-body {
+    padding: var(--spacing-md);
+  }
+  
+  /* Formulários mais compactos */
+  .form-group {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .form-label {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    min-height: 40px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+  
+  /* Botões do formulário */
+  .form-actions {
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+  }
+  
+  .btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    min-height: 40px;
+  }
+  
+  /* Seletores de dias da semana */
+  .weekdays-selector {
+    gap: var(--spacing-xs);
+  }
+  
+  .weekday-label {
+    min-width: 40px;
+    min-height: 40px;
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-xs);
+  }
+  
+  /* Estado vazio */
+  .empty-state {
+    padding: var(--spacing-lg);
+  }
+  
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .empty-text {
+    font-size: var(--font-size-md);
+  }
+  
+  .empty-subtext {
+    font-size: var(--font-size-sm);
+  }
+  
+  /* Configurações */
+  .settings-content {
+    padding: var(--spacing-md);
+  }
+  
+  .setting-item {
+    padding: var(--spacing-sm) 0;
+  }
+  
+  .setting-label {
+    font-size: var(--font-size-sm);
+  }
+  
+  .toggle-switch {
+    width: 44px;
+    height: 24px;
+  }
+  
+  .toggle-slider {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Exportação */
+  .export-actions {
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+  }
+  
+  .export-actions .btn {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm);
+  }
+  
+  .instruction-section {
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+  }
+  
+  .instruction-section h4 {
+    font-size: var(--font-size-sm);
+  }
+  
+  .instruction-section p,
+  .instruction-section ol {
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* Tablets e dispositivos médios (481px - 768px) */
+@media (max-width: 768px) and (min-width: 481px) {
+  .main-content {
+    padding: var(--spacing-lg);
   }
   
   .fab {
