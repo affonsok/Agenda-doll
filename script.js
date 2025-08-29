@@ -769,6 +769,101 @@ class AppState {
     modal.classList.remove('active');
   }
 
+  /**
+   * Exporta tarefas diretamente para a agenda do Android
+   */
+  exportToAndroidCalendar() {
+    const futureTasks = this.tasks.filter(task => {
+      const taskDate = new Date(task.dataHora);
+      return taskDate >= new Date() && !task.completa;
+    });
+
+    if (futureTasks.length === 0) {
+      this.showNotification('Nenhuma tarefa futura para exportar!', 'warning');
+      return;
+    }
+
+    // Para Android, vamos criar um evento por vez ou usar Web Share API
+    if (futureTasks.length === 1) {
+      this.createAndroidCalendarIntent(futureTasks[0]);
+    } else {
+      this.shareMultipleTasksToAndroid(futureTasks);
+    }
+  }
+
+  /**
+   * Cria um Intent URL para abrir o calendário do Android com uma tarefa
+   */
+  createAndroidCalendarIntent(task) {
+    const startDate = new Date(task.dataHora);
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hora depois
+    
+    // Formato de data para Android Calendar Intent
+    const startTime = startDate.getTime();
+    const endTime = endDate.getTime();
+    
+    const title = encodeURIComponent(`${task.emoji} ${task.titulo}`);
+    const description = encodeURIComponent(`Categoria: ${CONFIG.CATEGORIES[task.categoria].name}\n\nCriado pela Agenda da Isadora`);
+    
+    // Intent URL para Android Calendar
+    const intentUrl = `intent://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${this.formatDateForAndroid(startDate)}/${this.formatDateForAndroid(endDate)}&details=${description}#Intent;scheme=https;package=com.google.android.calendar;end`;
+    
+    // Fallback para web se o app não estiver disponível
+    const webUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${this.formatDateForAndroid(startDate)}/${this.formatDateForAndroid(endDate)}&details=${description}`;
+    
+    try {
+      // Tenta abrir o app nativo primeiro
+      window.location.href = intentUrl;
+      
+      // Fallback para web após um pequeno delay
+      setTimeout(() => {
+        window.open(webUrl, '_blank');
+      }, 1000);
+      
+      this.showNotification('Abrindo calendário do Android... 📱');
+    } catch (error) {
+      // Se falhar, abre direto no navegador
+      window.open(webUrl, '_blank');
+      this.showNotification('Abrindo Google Calendar... 📅');
+    }
+  }
+
+  /**
+   * Compartilha múltiplas tarefas usando Web Share API ou ICS
+   */
+  async shareMultipleTasksToAndroid(tasks) {
+    // Verifica se Web Share API está disponível
+    if (navigator.share) {
+      try {
+        const tasksList = tasks.map(task => {
+          const date = new Date(task.dataHora).toLocaleDateString('pt-BR');
+          const time = new Date(task.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+          return `${task.emoji} ${task.titulo} - ${date} às ${time}`;
+        }).join('\n');
+        
+        await navigator.share({
+          title: 'Minhas Tarefas - Agenda da Isadora',
+          text: `📋 Tarefas para adicionar na agenda:\n\n${tasksList}\n\n🌟 Criado pela Agenda da Isadora`,
+        });
+        
+        this.showNotification('Tarefas compartilhadas! 📱');
+      } catch (error) {
+        // Se o usuário cancelar ou der erro, volta para ICS
+        this.exportToICS();
+      }
+    } else {
+      // Fallback para ICS se Web Share não estiver disponível
+      this.exportToICS();
+    }
+  }
+
+  /**
+   * Formata data para Android Calendar Intent (formato: YYYYMMDDTHHMMSSZ)
+   */
+  formatDateForAndroid(date) {
+    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  }
+
   exportToICS() {
     const futureTasks = this.tasks.filter(task => {
       const taskDate = new Date(task.dataHora);
@@ -1079,6 +1174,11 @@ class AppState {
     });
     
     document.getElementById('exportModalClose').addEventListener('click', () => {
+      this.closeExportModal();
+    });
+    
+    document.getElementById('exportAndroidBtn').addEventListener('click', () => {
+      this.exportToAndroidCalendar();
       this.closeExportModal();
     });
     
